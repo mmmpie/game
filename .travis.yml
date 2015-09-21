@@ -3,3 +3,6 @@ node_js:
   - "0.12"
 notifications:
   slack: bananafu:Liblm2mpm126fmFrYTMepKXY
+before_script:
+  - npm install -g gulp
+script: gulp
