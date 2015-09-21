@@ -1,8 +1,9 @@
 language: node_js
 node_js:
-  - "0.12"
+- '0.12'
 notifications:
-  slack: bananafu:Liblm2mpm126fmFrYTMepKXY
+  slack:
+    secure: WGFwNCLJnmIaVpiGwZvdbITnKsQmALIwm7844FFEcQbEUz7ZaDxWqiTMDt+Kl3tbJcuEmZIXf3GyqmfTYcYpp8fDTkArH6/Qgl6saSOUtMOx0G1kHlwwU0WdGhqDJ4z03LzObKvLE5EqqPq+b2e746MvNWJFGkq9J5nGoNo6mPnWf35WeUd302dgEDoBMF5quJbTBoIdyQ7XhS9HaBewsaqjP89f1PPNh0Pr95srTBDAP67epD4tHJ5xEbprMSdBnRX+/Q+cqpYLoFmhQPXnrtC6+t+W3V7KgB3zGsd+DP1Uz/YpuEPktqJYwTau7nmShITaucj9MWVUusiIdzgUHfahgxTPtMPSKcrtUV1h4XbaBL6Li4bgEjjscOQnEDUAwJ5khmRBhGYo1UkcvN8lH1vSjhHjRezQFb5178wLz9Uy3bQMu8nCLFAaqANlf5Wc53bn6r061rAt+4MWX2GKsMtqwVCynwyuf/5btog94tlWjMWws/yiENqOqAMe86Gmr1ho4PWWtvbE057S1QlDbHSb2t8VM0eiBhHq4bmN1oGyK/JPGiBpPs1/9Eqx9drIULdPU47aj0hDjbdNzbCClL+QN3cV/aIvT00wZud7jpiY8UN/h/TT0UsjVgrVnr19yoX1EbKOxbReDHaWzdDIe8PRK+GiaU09L5B0nra3KM0=
 before_script:
-  - npm install -g gulp
+- npm install -g gulp
 script: gulp
