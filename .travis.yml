@@ -1,3 +1,5 @@
 language: node_js
 node_js:
   - "0.12"
+notifications:
+  slack: bananafu:Liblm2mpm126fmFrYTMepKXY
