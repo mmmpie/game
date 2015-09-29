@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Game</title>
+    <link rel="stylesheet" href="static/master.css" media="screen" title="no title" charset="utf-8">
+  </head>
+  <body>
+    <h1>Write a Game</h1>
+    <p>
+      I have wanted to write a game for a long time, perhaps since I was six.
+      The oldest game I remember is Galaga!
+    </p>
+    <p>
+      In all the time since then I have started many games, but finished none.
+      With the benefit of hindsight I can say that two factors contributed to
+      that.
+    </p>
+    <p>
+      The scope of all of my games has exceeded my ability. I am an experienced
+      programmer, I do not think that this exercise is beyond me. However my
+      knowledge and intuition does not apply directly to games. I need to take
+      some time to develop my game skills (whatever those are) from the very
+      beginning.
+    </p>
+    <p>
+      I do not have a lot of time to commit to any project. To stay motivated I
+      need to make tangible progress with small increments. Starting a project
+      with a big plan makes it challenging to appreciate what you have done.
+    </p>
+    <p>
+      With both of these in mind I decided to make my biggest constraint and weakness
+      the center of a new project.
+    </p>
+    <p>
+      I can put in an hour of work at a time.
+      So I will focus on doing as much as possible with that hour, focusing on
+      what can be done, instead of what remains to be done. My hope is for this
+      game to be a journey of learning, with no pre-ordained goal.
+    </p>
+    <h2>Hour 1 <a href="hour-1/hour-1.html">&#10144;</a></h2>
+    <p>
+      To write a playable game in one hour. It is necessary to limit the game as much
+      as possible. For this hour I am going to constrain player input to clicks.
+      With no other options the click can only modify a single variable. In the
+      grand tradition of iphone games this can change a player's y velocity
+      while x velocity is fixed within a game world.
+    </p>
+    <p>
+      That is, flappy bird.
+    </p>
+    <h2>Interlude</h2>
+    <p>
+      Ive spent much more time than I wanted (probably a couple of hours now)
+      getting the game hosted on Heroku. They now support auto deploy from Github,
+      so I had to try that out. At the same time I also wanted to see events in Slack.
+      Travis is sitting in there running the build for the game and all of its tests.
+      Heroku waits for Travis to give it the green light, and Travis posts a notification
+      to a Slack channel.
+    </p>
+    <p>
+      I could have implemented this page and hosting for the game as Github Pages.
+      But I'm guessing it wont be too long before I want to put in some server side
+      functionality. This also gives me a chance to try out the Github Flow process
+      and continuous integration/deployment.
+    </p>
+    <h2>Hour 2 <a href="hour-2/hour-2.html">&#10144;</a></h2>
+    <p>
+      Clony Balony isnt much of a game! But there is a playfield and a player moves within it.
+      This hour I'll add a score, and maybe even a way to get some points.
+    </p>
+  </body>
+</html>

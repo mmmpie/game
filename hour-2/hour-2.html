@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      .game {
+        position: relative;
+        border: 1px solid black;
+        background-color: lightblue;
+        top: 50px;
+        left: 50px;
+        width: 320px;
+        height: 320px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Exercise 1:</h1>
+    Write a game!<br>
+    You have one hour.<br>
+    GO!<br>
+
+    <div class="game" id="game"></div>
+
+    <script type="text/javascript">
+      (function() {
+        // this is the game context
+        var gameFieldId = 'game';
+        var xMin = 0;
+        var xMax = 320;
+        var yMin = 0;
+        var yMax = 320;
+
+        var x = 15;
+        var y = 0;
+        var deltaX = 0;
+        var deltaY = 1;
+
+        var invertDirection = false;
+
+        var heightField = [];
+        var heightFieldOffset = 0;
+        var deltaHeightFieldOffset = 0.9;
+
+        var playerHeight = 10;
+        var playerWidth = 10;
+
+        for(var i = 0; i < 3000; i++){
+          heightField.push( [50 + Math.cos(i/100) * 50, 100 + Math.sin(i/100) * 50]);
+        };
+
+        function mainLoop() {
+          // this is the main loop,
+          // it is run at fixed intervals
+          // updating the game state
+          // and rendering the game to the page
+          physics();
+          render();
+
+          function physics() {
+            if(invertDirection){
+              deltaX = -deltaX;
+              deltaY = -deltaY;
+              invertDirection = false;
+            }
+
+            x = x + deltaX;
+            y = y + deltaY;
+            heightFieldOffset += deltaHeightFieldOffset;
+
+            if (x < xMin) {
+              x = xMin;
+              deltaX = -deltaX;
+            }
+
+            if (x > xMax - playerWidth) {
+              x = xMax - playerWidth;
+              deltaX = -deltaX;
+            }
+
+            if (y < yMin) {
+              y = yMin;
+              deltaY = -deltaY;
+            }
+
+            var heightFieldMin = heightField[Math.floor(heightFieldOffset+1) % (heightField.length)][0];
+
+            if (y < heightFieldMin) {
+              y = heightFieldMin;
+              deltaY = -deltaY;
+            }
+
+            var heightFieldMax = yMax - heightField[Math.floor(heightFieldOffset+1) % (heightField.length)][1];
+
+            if (y > heightFieldMax - playerHeight) {
+              y = heightFieldMax - playerHeight;
+              deltaY = -deltaY;
+            }
+
+            if (y > yMax - playerHeight) {
+              y = yMax - playerHeight;
+              deltaY = -deltaY;
+            }
+          }
+
+          function render() {
+            var renderedGameState = '';
+            renderedGameState += '<div ';
+            renderedGameState += 'style="position: absolute; ';
+            renderedGameState += 'width: 10px; height: 10px; background-color: red; ';
+            renderedGameState += 'top: ' + y + 'px; ';
+            renderedGameState += 'left: ' + x + 'px; ';
+            renderedGameState += '">';
+            renderedGameState += '</div>';
+
+            var heightFieldCount = heightField.length;
+            if(heightFieldCount > xMax){ heightFieldCount = xMax; }
+            var heightFieldWidth = xMax / heightFieldCount;
+            for(i=0; i < heightFieldCount; i++){
+              var iPrime = (i + Math.floor(heightFieldOffset)) % (heightField.length);
+              renderedGameState += '<div ';
+              renderedGameState += 'style="position: absolute; ';
+              renderedGameState += 'background-color: green; ';
+              renderedGameState += 'top: ' + (yMax - heightField[iPrime][1]) + 'px; ';
+              renderedGameState += 'left: ' + (i * heightFieldWidth) + 'px; ';
+              renderedGameState += 'width: ' + heightFieldWidth + 'px; ';
+              renderedGameState += 'height: ' + heightField[iPrime][1] + 'px; ';
+              renderedGameState += '">';
+              renderedGameState += '</div>';
+            }
+
+            for(i=0; i < heightFieldCount; i++){
+              var iPrime = (i + Math.floor(heightFieldOffset)) % (heightField.length);
+              renderedGameState += '<div ';
+              renderedGameState += 'style="position: absolute; ';
+              renderedGameState += 'background-color: white; ';
+              renderedGameState += 'top: 0px; ';
+              renderedGameState += 'left: ' + (i * heightFieldWidth) + 'px; ';
+              renderedGameState += 'width: ' + heightFieldWidth + 'px; ';
+              renderedGameState += 'height: ' + heightField[iPrime][0] + 'px; ';
+              renderedGameState += '">';
+              renderedGameState += '</div>';
+            }
+
+            document.getElementById(gameFieldId).innerHTML = renderedGameState;
+          }
+
+          function mod(a, b){
+            if(a < b){
+              return a;
+            }
+
+            if( a == b ){
+              return 0;
+            }
+
+            var remainder = a % b;
+
+          }
+        }
+
+        // add event handlers
+        document.onclick = function(){
+          invertDirection = true;
+        };
+
+        //setTimeout( mainLoop, 1000);
+        setInterval( mainLoop, 10);
+      })();
+    </script>
+  </body>
+</html>
