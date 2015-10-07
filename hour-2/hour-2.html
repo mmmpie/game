@@ -160,6 +160,15 @@
             var remainder = a % b;
 
           }
+         
+          // clamp a supplied value to a high and low value
+          // the bounds are inclusive, make sure to adjust
+          // watch for off by one errors 
+          function clamp(low, high, value){
+            if(value < low){return low;}
+            if(value > high){return high;}
+            return value;
+          }  
         }
 
         // add event handlers
