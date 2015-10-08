@@ -23,7 +23,7 @@
     You have one hour.<br>
     GO!<br>
 
-    <div class="game" id="game"></div>
+    <canvas id="game" width="320" height="320"></canvas>
 
     <script type="text/javascript">
       (function() {
@@ -67,8 +67,20 @@
               invertDirection = false;
             }
 
-            x = x + deltaX;
-            y = y + deltaY;
+            x += deltaX;
+            y += deltaY;
+            
+            x = clamp(xMin, xMax, x);
+            y = clamp(yMin, yMax, y);
+            
+            if (x == xMin || x == xMax) {
+              deltaX *= -1;
+            }
+            
+            if (y == yMin || y == yMax) {
+              deltaY *= -1;
+            }
+           
             heightFieldOffset += deltaHeightFieldOffset;
 
             if (x < xMin) {
@@ -107,14 +119,10 @@
           }
 
           function render() {
+            var canvas = document.getElementById(gameFieldId).getContext("2d");
             var renderedGameState = '';
-            renderedGameState += '<div ';
-            renderedGameState += 'style="position: absolute; ';
-            renderedGameState += 'width: 10px; height: 10px; background-color: red; ';
-            renderedGameState += 'top: ' + y + 'px; ';
-            renderedGameState += 'left: ' + x + 'px; ';
-            renderedGameState += '">';
-            renderedGameState += '</div>';
+            canvas.fillStyle = "#000088";
+            canvas.fillRect(0,0,320,320);
 
             var heightFieldCount = heightField.length;
             if(heightFieldCount > xMax){ heightFieldCount = xMax; }
@@ -123,7 +131,7 @@
               var iPrime = (i + Math.floor(heightFieldOffset)) % (heightField.length);
               renderedGameState += '<div ';
               renderedGameState += 'style="position: absolute; ';
-              renderedGameState += 'background-color: green; ';
+                      renderedGameState += 'background-color: green; ';
               renderedGameState += 'top: ' + (yMax - heightField[iPrime][1]) + 'px; ';
               renderedGameState += 'left: ' + (i * heightFieldWidth) + 'px; ';
               renderedGameState += 'width: ' + heightFieldWidth + 'px; ';
@@ -145,7 +153,7 @@
               renderedGameState += '</div>';
             }
 
-            document.getElementById(gameFieldId).innerHTML = renderedGameState;
+            
           }
 
           function mod(a, b){
