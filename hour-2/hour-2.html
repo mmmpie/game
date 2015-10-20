@@ -6,33 +6,38 @@
     <meta charset="utf-8">
     <title></title>
     <style media="screen">
-      .game {
-        position: relative;
-        border: 1px solid black;
-        background-color: lightblue;
-        top: 50px;
-        left: 50px;
-        width: 320px;
-        height: 320px;
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #game {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
       }
     </style>
   </head>
   <body>
-    <h1>Exercise 1:</h1>
-    Write a game!<br>
-    You have one hour.<br>
-    GO!<br>
+    <h1>Hour 2:</h1>
+    Convert the renderer to use a canvas. The div based renderer causes mobile
+    safari to crash after a few seconds.
 
-    <canvas id="game" width="320" height="320"></canvas>
+    <canvas id="game"/>
 
     <script type="text/javascript">
       (function() {
         // this is the game context
         var gameFieldId = 'game';
         var xMin = 0;
-        var xMax = 320;
+        var xMax = 2000;
         var yMin = 0;
-        var yMax = 320;
+        var yMax = 1200;
+
+        document.getElementById(gameFieldId).width = xMax;
+        document.getElementById(gameFieldId).height = yMax;
 
         var x = 15;
         var y = 0;
@@ -44,7 +49,7 @@
         var heightField = [];
         var heightFieldOffset = 0;
         var deltaHeightFieldOffset = 0.9;
-
+        var coins = [];
         var playerHeight = 10;
         var playerWidth = 10;
 
@@ -52,16 +57,20 @@
           heightField.push( [50 + Math.cos(i/100) * 50, 100 + Math.sin(i/100) * 50]);
         };
 
+        for(var i = 0; i < 30; i++){
+          coins.push(Math.random());
+        }
+
         function mainLoop() {
           // this is the main loop,
           // it is run at fixed intervals
           // updating the game state
           // and rendering the game to the page
-          physics();
-          render();
-
-          function physics() {
-            if(invertDirection){
+          if(invertDirection){
+              deltaX = -deltaX;
+              deltaY = -deltaY;
+              invertDirection = false;
+            }f(invertDirection){
               deltaX = -deltaX;
               deltaY = -deltaY;
               invertDirection = false;
@@ -69,18 +78,18 @@
 
             x += deltaX;
             y += deltaY;
-            
+
             x = clamp(xMin, xMax, x);
             y = clamp(yMin, yMax, y);
-            
+
             if (x == xMin || x == xMax) {
               deltaX *= -1;
             }
-            
+
             if (y == yMin || y == yMax) {
               deltaY *= -1;
             }
-           
+
             heightFieldOffset += deltaHeightFieldOffset;
 
             if (x < xMin) {
@@ -116,44 +125,76 @@
               y = yMax - playerHeight;
               deltaY = -deltaY;
             }
+
+            // see if the player hit a coin
+            //draw coins
+            // for(i=0; i < coins.length; i++){
+            //     if(Math.floor(heightFieldOffset) == i * 300
+            //     && d){
+            //
+            //     }
+            //     coins[i] * yMax,
+            //     playerWidth,
+            //     playerHeight
+            //   );
+            // }
           }
 
           function render() {
             var canvas = document.getElementById(gameFieldId).getContext("2d");
-            var renderedGameState = '';
-            canvas.fillStyle = "#000088";
-            canvas.fillRect(0,0,320,320);
 
+            // fill in the background (sky)
+            canvas.fillStyle = "#000088";
+            canvas.fillRect(xMin,yMin,xMax,yMax);
+
+            // calculate the width of a segment in the height field
             var heightFieldCount = heightField.length;
             if(heightFieldCount > xMax){ heightFieldCount = xMax; }
             var heightFieldWidth = xMax / heightFieldCount;
+
+            // draw the ground
             for(i=0; i < heightFieldCount; i++){
               var iPrime = (i + Math.floor(heightFieldOffset)) % (heightField.length);
-              renderedGameState += '<div ';
-              renderedGameState += 'style="position: absolute; ';
-                      renderedGameState += 'background-color: green; ';
-              renderedGameState += 'top: ' + (yMax - heightField[iPrime][1]) + 'px; ';
-              renderedGameState += 'left: ' + (i * heightFieldWidth) + 'px; ';
-              renderedGameState += 'width: ' + heightFieldWidth + 'px; ';
-              renderedGameState += 'height: ' + heightField[iPrime][1] + 'px; ';
-              renderedGameState += '">';
-              renderedGameState += '</div>';
+              canvas.fillStyle = "#008800";
+              canvas.fillRect(
+                i * heightFieldWidth,
+                yMax - heightField[iPrime][1],
+                heightFieldWidth,
+                heightField[iPrime][1]
+              );
             }
 
+            // draw the clouds
             for(i=0; i < heightFieldCount; i++){
               var iPrime = (i + Math.floor(heightFieldOffset)) % (heightField.length);
-              renderedGameState += '<div ';
-              renderedGameState += 'style="position: absolute; ';
-              renderedGameState += 'background-color: white; ';
-              renderedGameState += 'top: 0px; ';
-              renderedGameState += 'left: ' + (i * heightFieldWidth) + 'px; ';
-              renderedGameState += 'width: ' + heightFieldWidth + 'px; ';
-              renderedGameState += 'height: ' + heightField[iPrime][0] + 'px; ';
-              renderedGameState += '">';
-              renderedGameState += '</div>';
+              canvas.fillStyle = "#888888";
+              canvas.fillRect(
+                i * heightFieldWidth,
+                0,
+                heightFieldWidth,
+                heightField[iPrime][1]
+              );
             }
 
-            
+            //draw coins
+            for(i=0; i < coins.length; i++){
+              canvas.fillStyle = "#888800";
+              canvas.fillRect(
+                i * 300 - Math.floor(heightFieldOffset),
+                coins[i] * yMax,
+                playerWidth*10,
+                playerHeight*10
+              );
+            }
+
+            // draw the player
+            canvas.fillStyle = "#880000";
+            canvas.fillRect(
+              x,
+              y,
+              playerWidth*3,
+              playerHeight
+            );
           }
 
           function mod(a, b){
@@ -168,15 +209,15 @@
             var remainder = a % b;
 
           }
-         
+
           // clamp a supplied value to a high and low value
           // the bounds are inclusive, make sure to adjust
-          // watch for off by one errors 
+          // watch for off by one errors
           function clamp(low, high, value){
             if(value < low){return low;}
             if(value > high){return high;}
             return value;
-          }  
+          }
         }
 
         // add event handlers
